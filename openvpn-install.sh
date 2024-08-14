@@ -1157,6 +1157,7 @@ function newClient() {
 }
 
 function revokeClient() {
+	# Verifica si hay clientes existentes
 	NUMBEROFCLIENTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c "^V")
 	if [[ $NUMBEROFCLIENTS == '0' ]]; then
 		echo ""
@@ -1164,31 +1165,40 @@ function revokeClient() {
 		exit 1
 	fi
 
+	# Solicita el nombre del cliente a revocar
 	echo ""
-	echo "Select the existing client certificate you want to revoke"
-	tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | nl -s ') '
-	until [[ $CLIENTNUMBER -ge 1 && $CLIENTNUMBER -le $NUMBEROFCLIENTS ]]; do
-		if [[ $CLIENTNUMBER == '1' ]]; then
-			read -rp "Select one client [1]: " CLIENTNUMBER
-		else
-			read -rp "Select one client [1-$NUMBEROFCLIENTS]: " CLIENTNUMBER
-		fi
-	done
-	CLIENT=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | sed -n "$CLIENTNUMBER"p)
+	read -rp "Enter the name of the client you want to revoke: " CLIENT
+
+	# Verifica si el cliente existe
+	if ! grep -q "^V.*CN=$CLIENT" /etc/openvpn/easy-rsa/pki/index.txt; then
+		echo "Client $CLIENT does not exist!"
+		exit 1
+	fi
+
+	# Revoca el certificado del cliente
 	cd /etc/openvpn/easy-rsa/ || return
 	./easyrsa --batch revoke "$CLIENT"
 	EASYRSA_CRL_DAYS=3650 ./easyrsa gen-crl
+
+	# Actualiza la lista de revocación de certificados (CRL)
 	rm -f /etc/openvpn/crl.pem
 	cp /etc/openvpn/easy-rsa/pki/crl.pem /etc/openvpn/crl.pem
 	chmod 644 /etc/openvpn/crl.pem
+
+	# Elimina archivos de configuración del cliente
 	find /home/ -maxdepth 2 -name "$CLIENT.ovpn" -delete
 	rm -f "/root/$CLIENT.ovpn"
+
+	# Elimina la entrada del cliente en el archivo ipp.txt
 	sed -i "/^$CLIENT,.*/d" /etc/openvpn/ipp.txt
+
+	# Crea una copia de seguridad de index.txt
 	cp /etc/openvpn/easy-rsa/pki/index.txt{,.bk}
 
 	echo ""
 	echo "Certificate for client $CLIENT revoked."
 }
+
 
 function removeUnbound() {
 	# Remove OpenVPN-related config
