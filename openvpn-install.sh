@@ -1165,8 +1165,10 @@ function revokeClient() {
 		exit 1
 	fi
 
-	# Solicita el nombre del cliente a revocar
+	# Listar clientes existentes
 	echo ""
+ 	tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | nl -s ') '
+	# Solicita el nombre del cliente a revocar
  	until [[ $CLIENT =~ ^[a-zA-Z0-9_-]+$ ]]; do
 		read -rp "Client name: " -e CLIENT
 	done
