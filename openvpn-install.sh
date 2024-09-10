@@ -1120,6 +1120,7 @@ function newClient() {
 	fi
 
 	# Generates the custom client.ovpn
+ 	$homeDir="/home/user"
 	cp /etc/openvpn/client-template.txt "$homeDir/$CLIENT.ovpn"
 	{
 		echo "<ca>"
