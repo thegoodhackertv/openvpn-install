@@ -1120,7 +1120,7 @@ function newClient() {
 	fi
 
 	# Generates the custom client.ovpn
- 	$homeDir="/home/user"
+ 	homeDir="/home/user"
 	cp /etc/openvpn/client-template.txt "$homeDir/$CLIENT.ovpn"
 	{
 		echo "<ca>"
@@ -1171,7 +1171,7 @@ function revokeClient() {
  	tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | nl -s ') '
 	# Solicita el nombre del cliente a revocar
  	until [[ $CLIENT =~ ^[a-zA-Z0-9_-]+$ ]]; do
-		read -rp "Client name: " -e CLIENT
+		read -rp "Enter client name: " -e CLIENT
 	done
  
 	# Verifica si el cliente existe
