@@ -897,8 +897,11 @@ ncp-ciphers $CIPHER
 tls-server
 tls-version-min 1.2
 tls-cipher $CC_CIPHER
+tls-auth ta.key 0
 client-config-dir /etc/openvpn/ccd
 status /var/log/openvpn/status.log
+comp-lzo
+reneg-sec 0
 verb 3" >>/etc/openvpn/server.conf
 
 	# Create client-config-dir dir
@@ -1045,9 +1048,9 @@ tls-client
 tls-version-min 1.2
 tls-cipher $CC_CIPHER
 ignore-unknown-option block-outside-dns
-setenv opt block-outside-dns # Prevent Windows 10 DNS leak
 verb 3
 reneg-sec 0
+key-direction 1
 comp-lzo" >>/etc/openvpn/client-template.txt
 
 	if [[ $COMPRESSION_ENABLED == "y" ]]; then
