@@ -900,7 +900,6 @@ ncp-ciphers $CIPHER
 tls-server
 tls-version-min 1.2
 tls-cipher $CC_CIPHER
-tls-auth ta.key 0
 client-config-dir /etc/openvpn/ccd
 status /var/log/openvpn/status.log
 comp-lzo
