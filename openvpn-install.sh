@@ -1110,6 +1110,7 @@ function newClient() {
 
 	# Generates the custom client.ovpn
  	homeDir="/root/clients"
+  	userDir="/home/user/clients"
 	cp /etc/openvpn/client-template.txt "$homeDir/$CLIENT.ovpn"
 	{
 		echo "<ca>"
@@ -1141,6 +1142,8 @@ function newClient() {
 
 	echo ""
 	echo "The configuration file has been written to $homeDir/$CLIENT.ovpn."
+ 	echo "Copying file to $userDir/$CLIENT.ovpn."
+  	cp "$homeDir/$CLIENT.ovpn" "$userDir/$CLIENT.ovpn"
 	echo "Download the .ovpn file and import it in your OpenVPN client."
 
 	exit 0
@@ -1180,7 +1183,7 @@ function revokeClient() {
 	chmod 644 /etc/openvpn/crl.pem
 
 	# Elimina archivos de configuración del cliente
-	find /home/ -maxdepth 2 -name "$CLIENT.ovpn" -delete
+	find /home/ -name "$CLIENT.ovpn" -delete
 	rm -f "/root/$CLIENT.ovpn"
 
 	# Elimina la entrada del cliente en el archivo ipp.txt
