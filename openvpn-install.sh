@@ -909,6 +909,8 @@ client-config-dir /etc/openvpn/ccd
 status /var/log/openvpn/status.log
 comp-lzo
 reneg-sec 0
+sndbuf 0
+rcvbuf 0
 verb 3" >>/etc/openvpn/server.conf
 
 	# Create client-config-dir dir
@@ -1057,6 +1059,8 @@ tls-cipher $CC_CIPHER
 ignore-unknown-option block-outside-dns
 verb 3
 reneg-sec 0
+sndbuf 0
+rcvbuf 0
 comp-lzo" >>/etc/openvpn/client-template.txt
 
 	if [[ $COMPRESSION_ENABLED == "y" ]]; then
