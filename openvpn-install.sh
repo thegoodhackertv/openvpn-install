@@ -857,6 +857,9 @@ ifconfig-pool-persist ipp.txt" >>/etc/openvpn/server.conf
 			echo "push \"dhcp-option DNS $DNS2\"" >>/etc/openvpn/server.conf
 		fi
 		;;
+  	14) # Dont push DNS
+   		echo ""
+   		;;
 	esac
 
   	#Check if network is defined for aditional route
