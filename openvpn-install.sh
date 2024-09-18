@@ -782,7 +782,7 @@ user nobody
 group $NOGROUP
 persist-key
 persist-tun
-keepalive 10 60
+keepalive 10 120
 ping-timer-rem
 topology subnet
 server 10.8.0.0 255.255.0.0
