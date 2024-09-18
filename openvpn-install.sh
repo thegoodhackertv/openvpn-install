@@ -864,7 +864,8 @@ ifconfig-pool-persist ipp.txt" >>/etc/openvpn/server.conf
   	#Check if network is defined for aditional route
  	LABS_NETWORK=${LABS_NETWORK:-n}
   	if [[ $LABS_NETWORK != 'n' ]]; then
-		echo "push \"route $LABS_NETWORK 255.255.0.0\"" >>/etc/openvpn/server.conf
+   		# route network netmask gateway metric (sin poner 0 antes aparecia 1000 en metric de route -n)
+		echo "push \"route $LABS_NETWORK 255.255.0.0 10.8.0.1 0\"" >>/etc/openvpn/server.conf
 	fi
  
 	# IPv6 network settings if needed
