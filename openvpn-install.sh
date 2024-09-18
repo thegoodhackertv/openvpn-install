@@ -863,7 +863,7 @@ ifconfig-pool-persist ipp.txt" >>/etc/openvpn/server.conf
 
   	#Check if network is defined for aditional route
  	LABS_NETWORK=${LABS_NETWORK:-n}
-  	if [[ $IPV6_SUPPORT != 'n' ]]; then
+  	if [[ $LABS_NETWORK != 'n' ]]; then
 		echo 'push "route $LABS_NETWORK 255.255.0.0"' >>/etc/openvpn/server.conf
 	fi
  
