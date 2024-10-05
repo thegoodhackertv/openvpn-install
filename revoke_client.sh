@@ -7,5 +7,5 @@ fi
 
 export MENU_OPTION="2"
 export CLIENT="$1"
-./openvpn-install.sh
+/root/openvpn-install.sh
 gsutil rm gs://hackjourneyprod-confs/"$1".ovpn
